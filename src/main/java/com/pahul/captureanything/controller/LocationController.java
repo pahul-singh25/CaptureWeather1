@@ -1,6 +1,8 @@
 package com.pahul.captureanything.controller;
 
+import com.pahul.captureanything.manager.kafka.WeatherTopicProducer;
 import com.pahul.captureanything.model.Location;
+import com.pahul.captureanything.model.WeatherData;
 import com.pahul.captureanything.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +15,8 @@ import java.util.List;
 public class LocationController {
     @Autowired
     private LocationService locationService;
+    @Autowired
+    WeatherTopicProducer weatherTopicProducer;
 
     @RequestMapping(value = "/getSelectedCoordinates",method = RequestMethod.GET, produces ="application/json")
     public List<Location> getSelectedCoordinates(@RequestParam("address") String address )
@@ -20,10 +24,9 @@ public class LocationController {
         return locationService.getSelectedLocation(address);
     }
 
-//    @RequestMapping(value = "/getCoordinates",method = RequestMethod.GET, produces ="application/json")
-//    public List<Location> getSelectedCoordinates(@RequestParam("city") String city, @RequestParam("country") String country )
-//    {
-//        return locationService.getSelectedLocation(city, state);
-//    }
+    @RequestMapping(value = "/getWeather",method = RequestMethod.GET, produces ="application/json")
+    public String getSelectegetCurrentWeather(@RequestParam("address") String address) throws Exception {
+        return weatherTopicProducer.currentWeatherProducer(address);
+    }
 
 }
