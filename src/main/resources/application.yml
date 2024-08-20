@@ -1,11 +1,9 @@
 spring:
   application:
     name: 'CaptureAnything'
-
   data:
     mongodb:
       uri: mongodb+srv://pahulronaldo:3Yp4FWkMsEwRKHp3@captureanything.sb5mp.mongodb.net/captureanythingdb?retryWrites=true&w=majority&appName=CaptureAnything
-
 management:
   endpoints:
     web:
@@ -22,11 +20,3 @@ management:
 
   security:
     enabled: false
-
-
-
-
-mongodb+srv://pahulronaldo:3Yp4FWkMsEwRKHp3@captureanything:
-  sb5mp:
-    mongodb:
-      net/?retryWrites=true&w=majority&appName=CaptureAnything:

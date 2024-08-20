@@ -20,7 +20,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/getSelectedUsers",method = RequestMethod.GET, produces ="application/json")
-    public List<User> getSelectedUsers(@RequestParam("name") String name,@RequestParam("email") String email )
+    public List<User> getSelectedUsers(@RequestParam("name") String name, @RequestParam("email") String email )
     {
         return userService.getSelectedUser(name,email);
     }
@@ -28,7 +28,6 @@ public class UserController {
     @PostMapping(value = "/addUser", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public User addUser(@RequestBody User user)
     {
-
         return userService.addUser(user);
     }
 

@@ -15,9 +15,15 @@ public class LocationController {
     private LocationService locationService;
 
     @RequestMapping(value = "/getSelectedCoordinates",method = RequestMethod.GET, produces ="application/json")
-    public List<Location> getSelectedCoordinates(@RequestParam("city") String city, @RequestParam("country") String country )
+    public List<Location> getSelectedCoordinates(@RequestParam("address") String address )
     {
-        return locationService.getSelectedLocation(city,country);
+        return locationService.getSelectedLocation(address);
     }
+
+//    @RequestMapping(value = "/getCoordinates",method = RequestMethod.GET, produces ="application/json")
+//    public List<Location> getSelectedCoordinates(@RequestParam("city") String city, @RequestParam("country") String country )
+//    {
+//        return locationService.getSelectedLocation(city, state);
+//    }
 
 }

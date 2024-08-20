@@ -4,6 +4,7 @@ import com.pahul.captureanything.model.User;
 import com.pahul.captureanything.repositories.UserRepository;
 import com.pahul.captureanything.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +25,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User addUser(User user) {
-        return userRepository.insert(user);
+        try {
+            return userRepository.insert(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return null;
     }
 }

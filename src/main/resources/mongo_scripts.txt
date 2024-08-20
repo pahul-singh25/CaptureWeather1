@@ -1,0 +1,16 @@
+db.Location.aggregate([
+    {
+        $addFields: {
+            displayName: {
+                $concat: ["$city", " ", "$country"]
+            }
+        }
+    },
+    {
+        $merge: {
+            into: "Location",
+            whenMatched: "merge",
+            whenNotMatched: "discard"
+        }
+    }
+])

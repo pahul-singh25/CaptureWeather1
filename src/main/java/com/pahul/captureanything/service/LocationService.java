@@ -7,5 +7,7 @@ import java.util.List;
 public interface LocationService {
 
 
-    List<Location> getSelectedLocation(String city, String country);
+    List<Location> getSelectedLocation(String address);
+
+//    List<Location> getSelectedLocation(String city, String country);
 }

@@ -14,12 +14,14 @@ import java.util.List;
 @Getter
 @Setter
 @JsonSerialize
-@JsonRootName(value=" ")
-@Document("user")
+@JsonRootName(value="")
+@Document(collection = "user")
 public class User implements Serializable {
     @Id
     private String id;
+
     private String name;
+
     @Indexed(unique = true)
     private String email;
     private String country;
