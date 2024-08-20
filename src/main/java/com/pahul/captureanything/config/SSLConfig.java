@@ -63,7 +63,7 @@ public class SSLConfig {
 //Factory encapsulate the creation of HTTPRequest ( not to wory about details)
         final HttpComponentsClientHttpRequestFactory requestFactory =
                 new HttpComponentsClientHttpRequestFactory(httpClient);
-        return new RestTemplate(requestFactory);
+        return new RestTemplate();
     }
 
 
