@@ -15,11 +15,11 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 //@Configuration
 //@EnableMongoRepositories(basePackages = "com.pahul.captureanything.repositories")
 public class MongoConfig {
-    @Value("spring.data.mongodb.uri")
+    @Value("${spring.data.mongodb.uri}")
     private String uri;
 
     @Bean
-    @Qualifier("mongoDatabaseFactory")
+    @Qualifier("${mongoDatabaseFactory}")
     public MongoDatabaseFactory mongoDbFactory() {
         return new SimpleMongoClientDatabaseFactory(uri);
     }

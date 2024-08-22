@@ -1,6 +1,10 @@
 spring:
+  profiles:
+    active: local
   application:
     name: 'CaptureAnything'
+  security:
+    enabled: false
   data:
     mongodb:
       uri: mongodb+srv://pahulronaldo:3Yp4FWkMsEwRKHp3@captureanything.sb5mp.mongodb.net/captureanythingdb?retryWrites=true&w=majority&appName=CaptureAnything
@@ -18,5 +22,11 @@ management:
         enabled: true
 
 
-  security:
-    enabled: false
+
+
+
+weather:
+  consumer:
+    groupId: weather-consumer-group
+  producer:
+    topic: weather-now
