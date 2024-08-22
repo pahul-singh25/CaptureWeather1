@@ -11,5 +11,7 @@ public interface UserService {
 
     List<User> getSelectedUser(String name, String email);
 
+    List<User> getSelectedUser(String name);
+
     User addUser(User user);
 }

@@ -22,18 +22,12 @@ public class WeatherTopicConsumer {
     @Value("${weather.producer.topic}")
     private String topic;
 
+    /**
+     * Consumes weather data from a Kafka topic and returns the number of messages consumed.
+     *
+     * @return  the number of messages consumed from the Kafka topic
+     */
     public Integer currentWeatherConsumer() {
-//        var props = new Properties();
-//        props.put("bootstrap.servers", "https://epic-mink-5018-us1-kafka.upstash.io:9092");
-//        props.put("sasl.mechanism", "SCRAM-SHA-256");
-//        props.put("security.protocol", "SASL_SSL");
-//        props.put("sasl.jaas.config", "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"ZXBpYy1taW5rLTUwMTgkmWwXA4TDCl9AukmZYBcZbR9s9ckR3aZAg8R2a6NWD6s\" password=\"********\");");
-//        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-//        props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-//        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,"earliest");
-//        props.put(ConsumerConfig.GROUP_ID_CONFIG, GROUP_ID);
-//
-//        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
         consumer.subscribe(Collections.singletonList(topic));
         int consummedCount = 0;
 
