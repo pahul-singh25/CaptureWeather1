@@ -10,8 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class WeatherController {
+    private final WeatherService weatherService;
+
     @Autowired
-    private WeatherService weatherService;
+    public WeatherController(WeatherService weatherService) {
+        this.weatherService = weatherService;
+    }
 
     @RequestMapping(value = "/getWeather",method = RequestMethod.GET, produces ="application/json")
     public WeatherData getWeather(@RequestParam("address") String address ) throws Exception

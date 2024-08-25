@@ -39,9 +39,9 @@ public class LocationController {
         }
     }
 
-    @RequestMapping(value = "/getWeather",method = RequestMethod.GET, produces ="application/json")
-    public String getSelectGetCurrentWeather(@RequestParam("address") String address) throws Exception {
-        return weatherTopicProducer.currentWeatherProducer(address);
-    }
+//    @RequestMapping(value = "/getWeather",method = RequestMethod.GET, produces ="application/json")
+//    public String getSelectGetCurrentWeather(@RequestParam("address") String address) throws Exception {
+//        return weatherTopicProducer.currentWeatherProducer(address);
+//    }
 
 }

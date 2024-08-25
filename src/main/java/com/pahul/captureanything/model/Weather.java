@@ -12,10 +12,8 @@ import java.time.format.DateTimeFormatter;
 @Data
 public class Weather {
 
-
     public Weather() {
     }
-
 
     public Weather(WeatherData weatherData) {
         this.current = weatherData.getCurrent();
@@ -26,7 +24,7 @@ public class Weather {
 
     @Id
     private String id;
-
+    private LocalDateTime currentTime;
     //This will ont - to many with Location table
     //This locationId will be in the table/collection Location
     //Saving weather should be along with saving data of location
@@ -37,7 +35,6 @@ public class Weather {
     private Current current;
 
 
-    private LocalDateTime currentTime;
 
 
 }

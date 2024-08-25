@@ -3,7 +3,7 @@ package com.pahul.captureanything.serviceimpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pahul.captureanything.manager.ExternalCallManager;
 import com.pahul.captureanything.model.WeatherData;
-import com.pahul.captureanything.repositories.WeatherRepository;
+import com.pahul.captureanything.mongo.repositories.WeatherRepository;
 import com.pahul.captureanything.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +16,8 @@ public class WeatherServiceImp implements WeatherService {
     ExternalCallManager externalCallManager;
     @Autowired
     WeatherRepository weatherRepository;
+
+
     @Override
     public WeatherData getCurrentWeather(String address) throws JsonProcessingException {
 

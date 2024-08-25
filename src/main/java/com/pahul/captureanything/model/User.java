@@ -2,6 +2,7 @@ package com.pahul.captureanything.model;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -27,5 +28,5 @@ public class User implements Serializable {
     @Indexed(unique = true)
     private String email;
     private String country;
-    private List<String> preference;
+    private List<String> preference = Lists.newArrayList();
 }
