@@ -9,9 +9,11 @@ public interface UserService {
 
     List<User> getUsers();
 
-    List<User> getSelectedUser(String name, String email);
+    User getSelectedUser(String name, String email);
 
     List<User> getSelectedUser(String name);
 
     User addUser(User user);
+
+    List<User>  getUserByPreferenceGreaterThan(long count);
 }

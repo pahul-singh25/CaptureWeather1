@@ -1,4 +1,4 @@
-package com.pahul.captureanything.repositories;
+package com.pahul.captureanything.mongo.repositories;
 
 import com.pahul.captureanything.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -12,4 +12,6 @@ public interface UserRepository extends MongoRepository<User, String> {
     List<User> findAllByNameOrEmailContains(String name, String email);
 
     List<User> findAllByNameContains(String name);
+
+    User findAllByNameAndEmail(String name, String email);
 }

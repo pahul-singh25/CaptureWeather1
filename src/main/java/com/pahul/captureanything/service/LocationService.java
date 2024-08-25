@@ -1,13 +1,13 @@
 package com.pahul.captureanything.service;
 
-import com.pahul.captureanything.model.OldLocation;
+import com.pahul.captureanything.model.Location;
 
 import java.util.List;
 
 public interface LocationService {
 
 
-    List<OldLocation> getSelectedLocation(String address);
+    List<Location> getSelectedLocation(String name, String country);
 
-//    List<OldLocation> getSelectedLocation(String city, String country);
+    Location saveIfDoNotExist(Location location);
 }

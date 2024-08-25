@@ -1,18 +1,21 @@
 package com.pahul.captureanything.serviceimpl;
 
+import com.google.common.collect.Lists;
 import com.pahul.captureanything.manager.ExternalCallManager;
-import com.pahul.captureanything.model.LocationResponse;
-import com.pahul.captureanything.model.OldLocation;
-import com.pahul.captureanything.repositories.LocationRepository;
+import com.pahul.captureanything.model.Location;
+import com.pahul.captureanything.model.WeatherData;
+import com.pahul.captureanything.mongo.repositories.LocationRepository;
 import com.pahul.captureanything.service.LocationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class LocationServiceImpl implements LocationService {
+   public static final Logger LOGGER = LoggerFactory.getLogger(LocationServiceImpl.class);
 
     private final LocationRepository locationRepository;
     private final ExternalCallManager externalCallManager;
@@ -28,19 +31,32 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public List<OldLocation> getSelectedLocation(String address) {
-        List<OldLocation> responseFromDb = locationRepository.findByCityAndCountry(address, "");
+    public List<Location> getSelectedLocation(String name, String country) {
+        List<Location> responseFromDb = locationRepository.findByNameAndCountry(name, country);
 //        findLocationDocumentsMatchingWithDisplayName(address);
         if(responseFromDb==null || responseFromDb.isEmpty()){
-           List<LocationResponse> responseFromAPI  = externalCallManager.getLocationInfo(address);
+           WeatherData weatherData = externalCallManager.getWeatherInfo(name+","+country);
            //save this response to the database so that we do not have to make API call next time
-           return  saveToTheLocationCollection(responseFromAPI);
+            Location locationFromWeather = weatherData.getLocation();
+           return Lists.newArrayList(locationRepository.save(locationFromWeather));
         }else{
             return responseFromDb;
         }
+
     }
 
-//    public List<OldLocation> findLocationDocumentsMatchingWithDisplayName(String sentence) {
+
+    @Override
+    public Location saveIfDoNotExist(Location location) {
+        List<Location> locationList = locationRepository.findByLocationId(location.createLocationId());
+        if(locationList==null || locationList.isEmpty()) {
+            return locationRepository.save(location);
+        }
+        return null;
+    }
+
+
+//    public List<Location> findLocationDocumentsMatchingWithDisplayName(String sentence) {
 //        // Split the sentence into words
 //        List<String> words = Arrays.asList(sentence.split("\\s+"));
 //
@@ -52,25 +68,7 @@ public class LocationServiceImpl implements LocationService {
 //
 //        Query query = new Query(criteria);
 //
-//        return mongoTemplate.find(query, OldLocation.class);
+//        return mongoTemplate.find(query, Location.class);
 //    }
 
-    private List<OldLocation> saveToTheLocationCollection(List<LocationResponse> responseFromAPI) {
-        List<OldLocation> toBeSavedToTheDatabase = new ArrayList<>();
-        responseFromAPI.forEach(r->{
-            if(r.getAddresstype()!=null && r.getAddresstype().equalsIgnoreCase("city")) {
-                OldLocation loc = new OldLocation();
-                String displayName = r.getDisplay_name();
-                loc.setLongitude(Double.parseDouble(r.getLon()));
-                loc.setLatitude(Double.parseDouble(r.getLat()));
-                loc.setDisplayName(displayName);
-                loc.setCity(r.getName());
-                loc.setCountry(displayName.substring(displayName.lastIndexOf(",") + 1));
-                toBeSavedToTheDatabase.add(loc);
-            }
-        });
-        //save to the database
-      locationRepository.saveAll(toBeSavedToTheDatabase);
-      return toBeSavedToTheDatabase;
-    }
 }

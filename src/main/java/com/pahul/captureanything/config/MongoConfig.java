@@ -12,22 +12,22 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-//@Configuration
-//@EnableMongoRepositories(basePackages = "com.pahul.captureanything.repositories")
+@Configuration
+@EnableMongoRepositories(basePackages = "com.pahul.captureanything.mongo.repositories")
 public class MongoConfig {
     @Value("${spring.data.mongodb.uri}")
     private String uri;
+
 
     @Bean
     @Qualifier("${mongoDatabaseFactory}")
     public MongoDatabaseFactory mongoDbFactory() {
         return new SimpleMongoClientDatabaseFactory(uri);
     }
-
-    @Bean
+    @Bean(name = "mongoTemplate")
     @ConditionalOnBean({MongoDatabaseFactory.class})
     @Primary
-    public MongoTemplate mongoTemplate(@Autowired  MongoDatabaseFactory mongoDatabaseFactory) {
+    public MongoTemplate mongoTemplate(@Autowired MongoDatabaseFactory mongoDatabaseFactory) {
         return new MongoTemplate(mongoDatabaseFactory);
     }
 

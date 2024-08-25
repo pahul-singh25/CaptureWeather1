@@ -1,8 +1,11 @@
 package com.pahul.captureanything.serviceimpl;
 
 import com.pahul.captureanything.model.User;
-import com.pahul.captureanything.repositories.UserRepository;
+import com.pahul.captureanything.mongo.repositories.UserRepository;
+import com.pahul.captureanything.redis.repositories.UserRedisRepository;
 import com.pahul.captureanything.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,8 +13,17 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    UserRepository  userRepository;;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+    private final UserRepository  userRepository;
+
+    private final  UserRedisRepository userRedisRepository;
+@Autowired
+    public UserServiceImpl(UserRepository userRepository, UserRedisRepository userRedisRepository) {
+        this.userRepository = userRepository;
+        this.userRedisRepository = userRedisRepository;
+    }
+
     @Override
     public List<User> getUsers() {
         return userRepository.findAll();
@@ -25,9 +37,15 @@ public class UserServiceImpl implements UserService {
      * @return a list of users that match the given name or email
      */
     @Override
-    public List<User> getSelectedUser(String name, String email) {
-        // Find all users that match the given name or email
-        return userRepository.findAllByNameOrEmailContains(name, email);
+    public User getSelectedUser(String name, String email) {
+        User u = userRedisRepository.findByNameAndEmail(name,email);
+        if(u!=null){
+            return u;
+        }else {
+            u = userRepository.findAllByNameAndEmail(name,email);
+            userRedisRepository.save(u);
+            return u;
+        }
     }
 
 
@@ -52,11 +70,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public User addUser(User user) {
         try {
-            return userRepository.insert(user);
+             User _user = userRepository.insert(user);
+            return userRedisRepository.save(_user);
         } catch (Exception e) {
-            e.printStackTrace();
-
+            LOGGER.error(e.getMessage(), e);
         }
         return null;
     }
+
+    @Override
+    public List<User> getUserByPreferenceGreaterThan(long count) {
+        return List.of();
+    }
+
+
 }

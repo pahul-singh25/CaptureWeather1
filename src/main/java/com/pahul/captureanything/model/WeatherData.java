@@ -3,10 +3,10 @@ package com.pahul.captureanything.model;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
-@JsonSerialize
 @Data
+@JsonSerialize
 public class WeatherData {
-//    @JsonProperty("OldLocation")
+     //We will be weather.current.toString() into this.
     private Location location;
     private Current current;
 }

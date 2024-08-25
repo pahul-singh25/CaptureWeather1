@@ -35,7 +35,6 @@ public class LocationResponse {
         if(lmap.containsKey("name")) {
             response.setName((String) lmap.get("name"));
         }
-
         return response;
     }
 
