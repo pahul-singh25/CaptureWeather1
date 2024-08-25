@@ -3,11 +3,38 @@ spring:
     active: local
   application:
     name: 'CaptureAnything'
-  security:
-    enabled: false
   data:
     mongodb:
       uri: mongodb+srv://pahulronaldo:3Yp4FWkMsEwRKHp3@captureanything.sb5mp.mongodb.net/captureanythingdb?retryWrites=true&w=majority&appName=CaptureAnything
+    redis:
+      host: warm-pig-50678.upstash.io
+      port: 6379
+      password:
+      timeout: 5000
+      connect-timeout: 5000
+      lettuce:
+        pool:
+          max-idle: 1
+          min-idle: 1
+          max-wait: 1000ms
+          max-active: 4
+      ssl:
+        enabled: true
+      client-type: lettuce
+
+  datasource:
+    url:
+    driver-class-name: com.mysql.jdbc.Driver
+    jpa:
+      hibernate:
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        ddl-auto: insert
+      show-sql: true
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.MySQLDialect
+          globally_quoted_identifiers: true
 management:
   endpoints:
     web:
@@ -22,7 +49,10 @@ management:
         enabled: true
 
 
-
+logging:
+  level:
+    org.springframework.data.redis: DEBUG
+    io.lettuce.core: DEBUG
 
 
 weather:

@@ -10,7 +10,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -18,14 +20,14 @@ import java.util.List;
 @JsonRootName(value="")
 @Document(collection = "user")
 @RedisHash("user")
-public class User implements Serializable {
+public class LocationToWeather implements Serializable {
     @Id
     private String id;
 
-    private String name;
-
     @Indexed(unique = true)
     private String email;
-    private String country;
-    private List<String> preference;
+    private Map<String, List<String>> preferecesTolocationIdrMap;
+
+    private Map<String,Map<LocalDateTime,Current>> localtionIdToWeatherDataIdMap;
+
 }
