@@ -1,8 +1,8 @@
 package com.pahul.captureanything.serviceimpl;
 
 import com.pahul.captureanything.manager.ExternalCallManager;
-import com.pahul.captureanything.model.Location;
 import com.pahul.captureanything.model.LocationResponse;
+import com.pahul.captureanything.model.OldLocation;
 import com.pahul.captureanything.repositories.LocationRepository;
 import com.pahul.captureanything.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +28,8 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public List<Location> getSelectedLocation(String address) {
-        List<Location> responseFromDb = locationRepository.findByCityAndCountry(address, "");
+    public List<OldLocation> getSelectedLocation(String address) {
+        List<OldLocation> responseFromDb = locationRepository.findByCityAndCountry(address, "");
 //        findLocationDocumentsMatchingWithDisplayName(address);
         if(responseFromDb==null || responseFromDb.isEmpty()){
            List<LocationResponse> responseFromAPI  = externalCallManager.getLocationInfo(address);
@@ -40,7 +40,7 @@ public class LocationServiceImpl implements LocationService {
         }
     }
 
-//    public List<Location> findLocationDocumentsMatchingWithDisplayName(String sentence) {
+//    public List<OldLocation> findLocationDocumentsMatchingWithDisplayName(String sentence) {
 //        // Split the sentence into words
 //        List<String> words = Arrays.asList(sentence.split("\\s+"));
 //
@@ -52,14 +52,14 @@ public class LocationServiceImpl implements LocationService {
 //
 //        Query query = new Query(criteria);
 //
-//        return mongoTemplate.find(query, Location.class);
+//        return mongoTemplate.find(query, OldLocation.class);
 //    }
 
-    private List<Location> saveToTheLocationCollection(List<LocationResponse> responseFromAPI) {
-        List<Location> toBeSavedToTheDatabase = new ArrayList<>();
+    private List<OldLocation> saveToTheLocationCollection(List<LocationResponse> responseFromAPI) {
+        List<OldLocation> toBeSavedToTheDatabase = new ArrayList<>();
         responseFromAPI.forEach(r->{
             if(r.getAddresstype()!=null && r.getAddresstype().equalsIgnoreCase("city")) {
-                Location loc = new Location();
+                OldLocation loc = new OldLocation();
                 String displayName = r.getDisplay_name();
                 loc.setLongitude(Double.parseDouble(r.getLon()));
                 loc.setLatitude(Double.parseDouble(r.getLat()));

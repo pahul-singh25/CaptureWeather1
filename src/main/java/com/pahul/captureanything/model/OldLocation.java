@@ -13,16 +13,14 @@ import java.io.Serializable;
 @Setter
 @JsonSerialize
 @JsonRootName(value="")
-@Document("Location")
-public class NewLocation implements Serializable {
+@Document("OldLocation")
+public class OldLocation implements Serializable {
     @Id
     private String id;
-    private String name;//city
-    private String region;//state
     private String country;
-    private double lat;
-    private double lon;
-    private String tz_id;
-    private long localtime_epoch;
-    private String localtime;
+    private String city;
+
+    private Double latitude;
+    private Double longitude;
+    private String displayName;
 }

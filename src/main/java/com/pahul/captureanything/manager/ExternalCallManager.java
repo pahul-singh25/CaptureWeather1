@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.pahul.captureanything.model.LocationResponse;
 import com.pahul.captureanything.model.WeatherData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -15,7 +14,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class ExternalCallManager {
@@ -75,14 +73,32 @@ public class ExternalCallManager {
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         // Make the GET request and parse the response
-        ResponseEntity<WeatherData> response = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                null,
-                WeatherData.class
-        );
+//        ResponseEntity<WeatherData> response = restTemplate.exchange(
+//                url,
+//                HttpMethod.GET,
+//                null,
+//                WeatherData.class
+//        );
 
-        return response.getBody();
+        try {
+            // Make the GET request and parse the response
+            ResponseEntity<WeatherData> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    entity,
+                    WeatherData.class
+            );
+            return response.getBody();
+        } catch (Exception e) {
+            // Handle the exception (log it, return a default value, etc.)
+//            System.err.println("Failed to fetch weather data: " + e.getMessage());
+//            e.printStackTrace();
+
+            // Optionally return a default value or null
+            return null;
+        }
+
+//        return response.getBody();
     }
 }
 

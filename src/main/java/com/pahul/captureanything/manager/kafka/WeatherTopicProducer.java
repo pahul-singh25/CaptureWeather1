@@ -2,11 +2,13 @@ package com.pahul.captureanything.manager.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pahul.captureanything.manager.ExternalCallManager;
+import com.pahul.captureanything.model.WeatherData;
 import jakarta.annotation.PreDestroy;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +21,13 @@ public class WeatherTopicProducer {
 
     @Autowired
     private KafkaProducer<String,String> producer;
+
+//    @Autowired
+    //private KafkaTemplate<String, WeatherData> kafkaTemplate;
+
+    @Autowired
+    @Qualifier("kafkaProducer2")
+    private KafkaProducer<String,WeatherData> kafkaTemplate;
 
     @Value("${weather.producer.topic}")
     private String topic;
@@ -51,5 +60,10 @@ public class WeatherTopicProducer {
             producer.close();
             System.out.println("Kafka producer closed.");
         }
+    }
+
+    public void sendWeatherData(String address, WeatherData weatherData) {
+        ProducerRecord<String, String> record = new ProducerRecord<>(topic, weatherData.toString());
+        producer.send(record);
     }
 }
