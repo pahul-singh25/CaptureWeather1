@@ -19,12 +19,12 @@ public class Weather {
         this.current = weatherData.getCurrent();
         this.locationId = weatherData.getLocation().createLocationId();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        this.currentTime = LocalDateTime.parse(current.getLast_updated(), formatter);
+        this.dateTime = LocalDateTime.parse(current.getLast_updated(), formatter);
     }
 
     @Id
     private String id;
-    private LocalDateTime currentTime;
+    private LocalDateTime dateTime;
     //This will ont - to many with Location table
     //This locationId will be in the table/collection Location
     //Saving weather should be along with saving data of location

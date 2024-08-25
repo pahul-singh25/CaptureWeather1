@@ -19,7 +19,7 @@ import java.util.UUID;
 public class Location implements Serializable {
     @Id
     private String id;
-
+    private String address;
     @Indexed(unique = true)
     private String locationId;
 
@@ -33,9 +33,24 @@ public class Location implements Serializable {
     private String localtime;
 
 
+    public Location(String address, String locationId,
+                        String name, String region, String country, double lat,
+                            double lon, String tz_id,
+                                    long localtime_epoch, String localtime) {
+        this.address = address;
+        this.locationId = createLocationId();
+        this.name = name;
+        this.region = region;
+        this.country = country;
+        this.lat = lat;
+        this.lon = lon;
+        this.tz_id = tz_id;
+        this.localtime_epoch = localtime_epoch;
+        this.localtime = localtime;
+    }
 
     /**
-to call this method after setting the ither fields of the location
+     to call this method after setting the either fields of the location
      * If either name or country is null, generates a random UUID and assigns it to the locationId.
      */
     public void setLocationId() {
@@ -43,10 +58,63 @@ to call this method after setting the ither fields of the location
     }
 
     public String createLocationId() {
-        if (this.getName() != null && this.getCountry() != null) {
-            return this.getName() + "-" + this.getCountry();
-        }else{
-            return  UUID.randomUUID().toString().replace("-", "");
+        StringBuilder locationId = new StringBuilder();
+        if (this.getName() != null) {
+            locationId.append(this.getName());
         }
+        if (this.getRegion() != null) {
+            if (!locationId.isEmpty()) {
+                locationId.append("-");
+            }
+            locationId.append(this.getRegion());
+        }
+        if (this.getCountry() != null) {
+            if (!locationId.isEmpty()) {
+                locationId.append("-");
+            }
+            locationId.append(this.getCountry());
+        }
+        if (locationId.isEmpty()) {
+            locationId.append("-");
+        }
+        String uud = UUID.randomUUID().toString().replace("-", "");
+        return  locationId.append(uud).toString();
+    }
+
+    public String getLocationId(){
+        if(this.locationId==null){
+            setLocationId(createLocationId());
+        }
+        return this.locationId;
+    }
+
+    public String getAddress(){
+        if(this.address==null){
+            setAddress(createAddress());
+        }
+        return this.address;
+    }
+
+    public String createAddress() {
+        StringBuilder address = new StringBuilder();
+        if (this.getName() != null) {
+            address.append(this.getName());
+        }
+        if (this.getRegion() != null) {
+            if (!address.isEmpty()) {
+                address.append(" ");
+            }
+            address.append(this.getRegion());
+        }
+        if (this.getCountry() != null) {
+            if (!address.isEmpty()) {
+                address.append(",");
+            }
+            address.append(this.getCountry());
+        }
+        if (address.isEmpty()) {
+            address.append("unknown");
+        }
+        return address.toString();
     }
 }
