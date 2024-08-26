@@ -2,7 +2,9 @@ package com.pahul.captureanything.manager.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pahul.captureanything.config.KafkaConfig;
 import com.pahul.captureanything.manager.ExternalCallManager;
+import com.pahul.captureanything.model.Weather;
 import com.pahul.captureanything.model.WeatherData;
 import jakarta.annotation.PreDestroy;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -21,6 +23,8 @@ public class WeatherTopicProducer {
     ExternalCallManager externalCallManager;
 
     @Autowired
+    private KafkaConfig kafkaConfig;
+
     private KafkaProducer<String,String> producer;
 
 //    @Autowired
@@ -39,6 +43,7 @@ public class WeatherTopicProducer {
             String weatherJson = (new ObjectMapper()).writeValueAsString(externalCallManager.getWeatherInfo(address));
                 // Send the JSON data to Kafka
             if(weatherJson!=null){
+                producer=kafkaConfig.kafkaProducer();
                 ProducerRecord<String, String> record = new ProducerRecord<>(topic, weatherJson);
                 Future<RecordMetadata> future = producer.send(record);
                 // Ensure the send operation completes successfully
@@ -66,6 +71,12 @@ public class WeatherTopicProducer {
     public void sendWeatherData(String address, WeatherData weatherData) throws JsonProcessingException {
         String weatherJson = (new ObjectMapper()).writeValueAsString(externalCallManager.getWeatherInfo(address));
 
+        ProducerRecord<String, String> record = new ProducerRecord<>(topic, weatherJson);
+        producer.send(record);
+    }
+
+    public void sendWeather(Weather weather) throws JsonProcessingException {
+        String weatherJson = (new ObjectMapper()).writeValueAsString(weather);
         ProducerRecord<String, String> record = new ProducerRecord<>(topic, weatherJson);
         producer.send(record);
     }

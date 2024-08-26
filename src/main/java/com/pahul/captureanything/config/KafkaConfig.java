@@ -6,17 +6,16 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import java.util.Properties;
 
-@Configuration
+@Component
 public class KafkaConfig {
 
     @Value("weather.consumer.groupId")
     private String groupId;
 
-    @Bean
     public KafkaConsumer<String,String> kafkaConsumer(){
         var props = new Properties();
         props.put("bootstrap.servers", "https://epic-mink-5018-us1-kafka.upstash.io:9092");
@@ -31,7 +30,6 @@ public class KafkaConfig {
         return new KafkaConsumer<>(props);
     }
 
-    @Bean
     public KafkaProducer<String,String> kafkaProducer(){
         var props = new Properties();
         props.put("bootstrap.servers", "https://epic-mink-5018-us1-kafka.upstash.io:9092");

@@ -2,6 +2,7 @@ package com.pahul.captureanything.serviceimpl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pahul.captureanything.manager.ExternalCallManager;
+import com.pahul.captureanything.manager.kafka.WeatherTopicProducer;
 import com.pahul.captureanything.model.Weather;
 import com.pahul.captureanything.model.WeatherData;
 import com.pahul.captureanything.mongo.repositories.LocationRepository;
@@ -27,12 +28,16 @@ public class WeatherServiceImpl implements WeatherService {
     private final LocationRepository locationRepository;
     private final MongoTemplate mongoTemplate;
 
+
+    private final WeatherTopicProducer weatherTopicProducer;
+
     @Autowired
-    public WeatherServiceImpl(WeatherRepository weatherRepository, LocationRepository locationRepository, ExternalCallManager externalCallManager, MongoTemplate mongoTemplate) {
+    public WeatherServiceImpl(WeatherRepository weatherRepository, LocationRepository locationRepository, ExternalCallManager externalCallManager, MongoTemplate mongoTemplate,WeatherTopicProducer weatherTopicProducer) {
         this.weatherRepository = weatherRepository;
         this.locationRepository = locationRepository;
         this.externalCallManager = externalCallManager;
         this.mongoTemplate = mongoTemplate;
+        this.weatherTopicProducer=weatherTopicProducer;
     }
 
 
@@ -48,6 +53,7 @@ public class WeatherServiceImpl implements WeatherService {
                 Weather weather = new Weather(weatherData);
                 weatherRepository.insert(weather);
                 locationRepository.save(weatherData.getLocation());
+                weatherTopicProducer.sendWeather(weather);
                 return weather;
             } else {
                 LOGGER.error("weather data is empty");
